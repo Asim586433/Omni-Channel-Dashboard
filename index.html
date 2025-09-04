@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innov8 iSMS - Omni-Channel Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --whatsapp: #25D366;
+            --facebook: #4267B2;
+            --instagram: #E1306C;
+            --email: #EA4335;
+            --sms: #6f42c1;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .sidebar {
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            color: white;
+            height: 100vh;
+            position: fixed;
+            padding-top: 20px;
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            margin: 6px 0;
+            border-radius: 5px;
+        }
+        
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .dashboard-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            border: none;
+            height: 100%;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-whatsapp {
+            border-bottom: 4px solid var(--whatsapp);
+        }
+        
+        .card-email {
+            border-bottom: 4px solid var(--email);
+        }
+        
+        .card-facebook {
+            border-bottom: 4px solid var(--facebook);
+        }
+        
+        .card-instagram {
+            border-bottom: 4px solid var(--instagram);
+        }
+        
+        .card-sms {
+            border-bottom: 4px solid var(--sms);
+        }
+        
+        .stats-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+        
+        .channel-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .badge-whatsapp {
+            background-color: rgba(37, 211, 102, 0.2);
+            color: var(--whatsapp);
+        }
+        
+        .badge-email {
+            background-color: rgba(234, 67, 53, 0.2);
+            color: var(--email);
+        }
+        
+        .badge-facebook {
+            background-color: rgba(66, 103, 178, 0.2);
+            color: var(--facebook);
+        }
+        
+        .badge-instagram {
+            background-color: rgba(225, 48, 108, 0.2);
+            color: var(--instagram);
+        }
+        
+        .badge-sms {
+            background-color: rgba(111, 66, 193, 0.2);
+            color: var(--sms);
+        }
+        
+        .recent-message {
+            border-left: 3px solid transparent;
+            padding-left: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .message-whatsapp {
+            border-left-color: var(--whatsapp);
+        }
+        
+        .message-email {
+            border-left-color: var(--email);
+        }
+        
+        .message-facebook {
+            border-left-color: var(--facebook);
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: var(--primary);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar d-none d-md-block">
+                <div class="text-center mb-4">
+                    <h3>Innov8 iSMS</h3>
+                    <p class="text-muted">Omni-Channel Platform</p>
+                </div>
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-comment-sms"></i> SMS
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fab fa-facebook-messenger"></i> Facebook
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-broadcast-tower"></i> SMPP Connections
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-credit-card"></i> Billing
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-md-10 main-content">
+                <div class="header d-flex justify-content-between align-items-center">
+                    <h4>Omni-Channel Dashboard</h4>
+                    <div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> New Campaign
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-2 col-6 mb-3">
+                        <div class="card dashboard-card card-sms">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="card-title">SMS</h6>
+                                        <h3>12,548</h3>
+                                        <p class="text-success"><small>+12% this month</small></p>
+                                    </div>
+                                    <div class="text-primary">
+                                        <i class="fas fa-comment-sms stats-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 mb-3">
+                        <div class="card dashboard-card card-whatsapp">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="card-title">WhatsApp</h6>
+                                        <h3>8,742</h3>
+                                        <p class="text-success"><small>+24% this month</small></p>
+                                    </div>
+                                    <div class="text-success">
+                                        <i class="fab fa-whatsapp stats-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 mb-3">
+                        <div class="card dashboard-card card-email">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="card-title">Email</h6>
+                                        <h3>23,981</h3>
+                                        <p class="text-success"><small>+8% this month</small></p>
+                                    </div>
+                                    <div class="text-danger">
+                                        <i class="fas fa-envelope stats-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 mb-3">
+                        <div class="card dashboard-card card-facebook">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="card-title">Facebook</h6>
+                                        <h3>3,451</h3>
+                                        <p class="text-success"><small>+15% this month</small></p>
+                                    </div>
+                                    <div class="text-primary">
+                                        <i class="fab fa-facebook-messenger stats-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 mb-3">
+                        <div class="card dashboard-card card-instagram">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="card-title">Instagram</h6>
+                                        <h3>2,876</h3>
+                                        <p class="text-success"><small>+18% this month</small></p>
+                                    </div>
+                                    <div class="text-danger">
+                                        <i class="fab fa-instagram stats-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 mb-3">
+                        <div class="card dashboard-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h6 class="card-title">Credits</h6>
+                                        <h3>5,200</h3>
+                                        <p class="text-danger"><small>Add more</small></p>
+                                    </div>
+                                    <div class="text-warning">
+                                        <i class="fas fa-credit-card stats-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts and Recent Messages -->
+                <div class="row">
+                    <div class="col-md-8 mb-4">
+                        <div class="card dashboard-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Message Analytics</h5>
+                                <div class="chart-container" style="position: relative; height:300px;">
+                                    <canvas id="messageChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card dashboard-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Recent Messages</h5>
+                                
+                                <div class="recent-message message-whatsapp">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="channel-badge badge-whatsapp">WhatsApp</span>
+                                        <small class="text-muted">2 min ago</small>
+                                    </div>
+                                    <p class="mb-0">Hi, I'd like to know more about your services</p>
+                                    <small class="text-muted">From: +1234567890</small>
+                                </div>
+                                
+                                <div class="recent-message message-email">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="channel-badge badge-email">Email</span>
+                                        <small class="text-muted">15 min ago</small>
+                                    </div>
+                                    <p class="mb-0">Newsletter subscription confirmation</p>
+                                    <small class="text-muted">To: john@example.com</small>
+                                </div>
+                                
+                                <div class="recent-message message-facebook">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="channel-badge badge-facebook">Facebook</span>
+                                        <small class="text-muted">45 min ago</small>
+                                    </div>
+                                    <p class="mb-0">When will my order be shipped?</p>
+                                    <small class="text-muted">From: Sarah Johnson</small>
+                                </div>
+                                
+                                <div class="recent-message message-whatsapp">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="channel-badge badge-whatsapp">WhatsApp</span>
+                                        <small class="text-muted">1 hour ago</small>
+                                    </div>
+                                    <p class="mb-0">Thank you for your prompt response!</p>
+                                    <small class="text-muted">From: +1987654321</small>
+                                </div>
+                                
+                                <div class="text-center mt-3">
+                                    <a href="#" class="btn btn-sm btn-outline-primary">View All Messages</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Campaigns and SMPP Status -->
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card dashboard-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Recent Campaigns</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Channel</th>
+                                                <th>Status</th>
+                                                <th>Recipients</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Summer Promotion</td>
+                                                <td><span class="badge bg-success">WhatsApp</span></td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>2,548</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Newsletter June</td>
+                                                <td><span class="badge bg-danger">Email</span></td>
+                                                <td><span class="badge bg-info">In Progress</span></td>
+                                                <td>12,876</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Product Launch</td>
+                                                <td><span class="badge bg-primary">SMS</span></td>
+                                                <td><span class="badge bg-warning">Scheduled</span></td>
+                                                <td>8,421</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Instagram Sale</td>
+                                                <td><span class="badge bg-danger">Instagram</span></td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                                <td>5,231</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="card dashboard-card">
+                            <div class="card-body">
+                                <h5 class="card-title">SMPP Connections</h5>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Reseller 1 Connection</span>
+                                        <span class="badge bg-success">Active</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-success" style="width: 75%"></div>
+                                    </div>
+                                    <small class="text-muted">Throughput: 45 msgs/sec</small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Reseller 2 Connection</span>
+                                        <span class="badge bg-success">Active</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-info" style="width: 60%"></div>
+                                    </div>
+                                    <small class="text-muted">Throughput: 32 msgs/sec</small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Enterprise Client A</span>
+                                        <span class="badge bg-warning">Idle</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar bg-warning" style="width: 10%"></div>
+                                    </div>
+                                    <small class="text-muted">Throughput: 2 msgs/sec</small>
+                                </div>
+                                
+                                <div class="text-center mt-4">
+                                    <button class="btn btn-outline-primary">
+                                        <i class="fas fa-plus"></i> New SMPP Connection
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Message statistics chart
+            const ctx = document.getElementById('messageChart').getContext('2d');
+            const messageChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [
+                        {
+                            label: 'SMS',
+                            data: [12000, 11000, 13000, 12000, 12500, 12548],
+                            backgroundColor: 'rgba(111, 66, 193, 0.7)',
+                        },
+                        {
+                            label: 'WhatsApp',
+                            data: [5000, 6000, 6500, 7000, 8000, 8742],
+                            backgroundColor: 'rgba(37, 211, 102, 0.7)',
+                        },
+                        {
+                            label: 'Email',
+                            data: [20000, 21000, 22000, 21500, 23000, 23981],
+                            backgroundColor: 'rgba(234, 67, 53, 0.7)',
+                        },
+                        {
+                            label: 'Social Media',
+                            data: [4000, 4500, 5000, 5200, 5500, 6327],
+                            backgroundColor: 'rgba(66, 103, 178, 0.7)',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Messages by Channel (Last 6 Months)'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Messages'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
